@@ -3,9 +3,13 @@ import { homedir } from 'os';
 import { join, sep } from 'path';
 import { promisify } from 'util';
 
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import { deleteExtensionArchive, extractExtension } from '../extensions/extensions-extractor.js';
 
 export const API_URL = 'https://api.gologin.com';
+export const GO_LOGIN_API_URL = process.env.GO_LOGIN_API_URL;
 
 const HOMEDIR = homedir();
 const CHROME_EXT_DIR_NAME = 'chrome-extensions';
