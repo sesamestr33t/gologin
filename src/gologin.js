@@ -26,7 +26,7 @@ import {
 import ExtensionsManager from './extensions/extensions-manager.js';
 import { archiveProfile } from './profile/profile-archiver.js';
 import { checkAutoLang } from './utils/browser.js';
-import { API_URL } from './utils/common.js';
+import { API_URL, GO_LOGIN_API_URL } from './utils/common.js';
 import { STORAGE_GATEWAY_BASE_URL } from './utils/constants.js';
 import { get, isPortReachable } from './utils/utils.js';
 
@@ -149,11 +149,7 @@ export class GoLogin {
   async getProfile(profile_id) {
     const id = profile_id || this.profile_id;
     debug('getProfile', this.access_token, id);
-    const profileResponse = await requests.get(`${API_URL}/browser/${id}`, {
-      headers: {
-        'Authorization': `Bearer ${this.access_token}`,
-      },
-    });
+    const profileResponse = await requests.get(`${GO_LOGIN_API_URL}/profile/${id}`);
 
     debug('profileResponse', profileResponse.statusCode, profileResponse.body);
 
