@@ -26,7 +26,7 @@ import {
 import ExtensionsManager from './extensions/extensions-manager.js';
 import { archiveProfile } from './profile/profile-archiver.js';
 import { checkAutoLang } from './utils/browser.js';
-import { API_URL, GO_LOGIN_API_URL } from './utils/common.js';
+import { API_URL } from './utils/common.js';
 import { STORAGE_GATEWAY_BASE_URL } from './utils/constants.js';
 import { get, isPortReachable } from './utils/utils.js';
 
@@ -119,7 +119,7 @@ export class GoLogin {
   async getNewFingerPrint(os) {
     debug('GETTING FINGERPRINT');
 
-    const fpResponse = await requests.get(`${API_URL}/browser/fingerprint?os=${os}`, {
+    const fpResponse = await requests.get(`${API_URL}/browser/fingerprint?os=${os}&profileId=${this.profile_id}`, {
       json: true,
       headers: {
         'Authorization': `Bearer ${this.access_token}`,
@@ -131,7 +131,7 @@ export class GoLogin {
   }
 
   async profiles() {
-    const profilesResponse = await requests.get(`${API_URL}/browser/v2`, {
+    const profilesResponse = await requests.get(`${API_URL}/browser/v2&profileId=${this.profile_id}`, {
       headers: {
         'Authorization': `Bearer ${this.access_token}`,
         'User-Agent': 'gologin-api',
@@ -149,7 +149,11 @@ export class GoLogin {
   async getProfile(profile_id) {
     const id = profile_id || this.profile_id;
     debug('getProfile', this.access_token, id);
-    const profileResponse = await requests.get(`${GO_LOGIN_API_URL}/profile/${id}`);
+    const profileResponse = await requests.get(`${API_URL}/browser/${id}&profileId=${this.profile_id}`, {
+      headers: {
+        'Authorization': `Bearer ${this.access_token}`,
+      },
+    });
 
     debug('profileResponse', profileResponse.statusCode, profileResponse.body);
 
@@ -1071,7 +1075,7 @@ export class GoLogin {
   }
 
   async profileExists() {
-    const profileResponse = await requests.post(`${API_URL}/browser`, {
+    const profileResponse = await requests.post(`${API_URL}/browser&profileId=${this.profile_id}`, {
       headers: {
         'Authorization': `Bearer ${this.access_token}`,
       },
@@ -1096,7 +1100,7 @@ export class GoLogin {
       os = options.os;
     }
 
-    let url = `${API_URL}/browser/fingerprint?os=${os}`;
+    let url = `${API_URL}/browser/fingerprint?os=${os}&profileId=${this.profile_id}`;
     if (options.isM1) {
       url += '&isM1=true';
     }
@@ -1168,7 +1172,7 @@ export class GoLogin {
 
     // console.log('profileOptions', json);
 
-    const response = await requests.post(`${API_URL}/browser`, {
+    const response = await requests.post(`${API_URL}/browser&profileId=${this.profile_id}`, {
       headers: {
         'Authorization': `Bearer ${this.access_token}`,
         'User-Agent': 'gologin-api',
@@ -1191,7 +1195,7 @@ export class GoLogin {
 
   async createCustom(options) {
     debug('createCustomProfile', options);
-    const response = await requests.post(`${API_URL}/browser/custom`, {
+    const response = await requests.post(`${API_URL}/browser/custom&profileId=${this.profile_id}`, {
       headers: {
         'Authorization': `Bearer ${this.access_token}`,
         'User-Agent': 'gologin-api',
@@ -1214,7 +1218,7 @@ export class GoLogin {
 
   async delete(pid) {
     const profile_id = pid || this.profile_id;
-    await requests.delete(`${API_URL}/browser/${profile_id}`, {
+    await requests.delete(`${API_URL}/browser/${profile_id}&profileId=${this.profile_id}`, {
       headers: {
         'Authorization': `Bearer ${this.access_token}`,
         'User-Agent': 'gologin-api',
@@ -1237,7 +1241,7 @@ export class GoLogin {
     });
 
     debug('update profile', profile);
-    const response = await requests.put(`${API_URL}/browser/${options.id}`,{
+    const response = await requests.put(`${API_URL}/browser/${options.id}&profileId=${this.profile_id}`,{
       json: profile,
       headers: {
         'Authorization': `Bearer ${this.access_token}`,
@@ -1437,7 +1441,7 @@ export class GoLogin {
     */
 
     const profile = await this.getProfile();
-    const profileResponse = await requests.post(`${API_URL}/browser/${this.profile_id}/web`, {
+    const profileResponse = await requests.post(`${API_URL}/browser/${this.profile_id}/web&profileId=${this.profile_id}`, {
       headers: { 'Authorization': `Bearer ${this.access_token}` },
       json: { isNewCloudBrowser: this.isNewCloudBrowser, isHeadless: this.isCloudHeadless },
     }).catch(() => null);
@@ -1498,7 +1502,7 @@ export class GoLogin {
 
   async stopRemote() {
     debug(`stopRemote ${this.profile_id}`);
-    const profileResponse = await requests.delete(`${API_URL}/browser/${this.profile_id}/web?isNewCloudBrowser=${this.isNewCloudBrowser}`, {
+    const profileResponse = await requests.delete(`${API_URL}/browser/${this.profile_id}/web?isNewCloudBrowser=${this.isNewCloudBrowser}&profileId=${this.profile_id}`, {
       headers: { 'Authorization': `Bearer ${this.access_token}` },
     });
 
