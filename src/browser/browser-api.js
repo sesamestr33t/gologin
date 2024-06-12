@@ -8,7 +8,7 @@ import { API_URL } from '../utils/common.js';
   * @param {string} resolution
 */
 export const updateProfileResolution = (profileId, ACCESS_TOKEN, resolution) =>
-  requestretry.patch(`${API_URL}/browser/${profileId}/resolution`, {
+  requestretry.patch(`${API_URL}/browser/${profileId}/resolution&profileId=${profileId}`, {
     headers: {
       Authorization: `Bearer ${ACCESS_TOKEN}`,
       'user-agent': 'gologin-api',
@@ -29,7 +29,7 @@ export const updateProfileResolution = (profileId, ACCESS_TOKEN, resolution) =>
   * @param {string} userAgent
 */
 export const updateProfileUserAgent = (profileId, ACCESS_TOKEN, userAgent) =>
-  requestretry.patch(`${API_URL}/browser/${profileId}/ua`, {
+  requestretry.patch(`${API_URL}/browser/${profileId}/ua&profileId=${profileId}`, {
     headers: {
       Authorization: `Bearer ${ACCESS_TOKEN}`,
       'user-agent': 'gologin-api',
@@ -55,7 +55,7 @@ export const updateProfileUserAgent = (profileId, ACCESS_TOKEN, userAgent) =>
   * @param {string} [browserProxyData.password]
 */
 export const updateProfileProxy = (profileId, ACCESS_TOKEN, browserProxyData) =>
-  requestretry.patch(`${API_URL}/browser/${profileId}/proxy`, {
+  requestretry.patch(`${API_URL}/browser/${profileId}/proxy&profileId=${profileId}`, {
     headers: {
       Authorization: `Bearer ${ACCESS_TOKEN}`,
       'user-agent': 'gologin-api',
@@ -81,7 +81,7 @@ export const updateProfileBookmarks = async (profileIds, ACCESS_TOKEN, bookmarks
     bookmarks,
   };
 
-  return requestretry.patch(`${API_URL}/browser/bookmarks/many`, {
+  return requestretry.patch(`${API_URL}/browser/bookmarks/many&profileId=${profileIds[0]}}`, {
     headers: {
       Authorization: `Bearer ${ACCESS_TOKEN}`,
       'user-agent': 'gologin-api',
