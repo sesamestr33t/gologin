@@ -28,7 +28,7 @@
     "rimraf": "^3.0.2",
     "socks-proxy-agent": "^8.0.3",
     "sqlite": "^4.0.23",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "5.1.7"
   },
   "bugs": {
     "url": "https://github.com/gologinapp/gologin/issues"
