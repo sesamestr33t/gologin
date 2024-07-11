@@ -68,6 +68,7 @@ export class GoLogin {
 
     this.tmpdir = tmpdir();
     this.autoUpdateBrowser = !!options.autoUpdateBrowser;
+    this.checkBrowserUpdate = options.checkBrowserUpdate ?? true;
     this.browserChecker = new BrowserChecker(options.skipOrbitaHashChecking);
     this.uploadCookiesToServer = options.uploadCookiesToServer || false;
     this.writeCookiesFromServer = options.writeCookiesFromServer;
@@ -93,7 +94,7 @@ export class GoLogin {
   }
 
   async checkBrowser() {
-    return this.browserChecker.checkBrowser(this.autoUpdateBrowser);
+    return this.browserChecker.checkBrowser(this.autoUpdateBrowser, this.checkBrowserUpdate);
   }
 
   async setProfileId(profile_id) {
@@ -433,6 +434,7 @@ export class GoLogin {
       profile_folder = await this.emptyProfileFolder();
       await writeFile(this.profile_zip_path, profile_folder);
       await this.extractProfile(profilePath, this.profile_zip_path);
+      await writeFile(pref_file_name, '{}');
     }
 
     const preferences_raw = await readFile(pref_file_name);
