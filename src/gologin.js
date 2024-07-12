@@ -634,7 +634,7 @@ export class GoLogin {
 
     debug('Profile ready. Path: ', profilePath, 'PROXY', JSON.stringify(get(preferences, 'gologin.proxy')));
 
-    return profilePath;
+    return profile;
   }
 
   async commitProfile() {
@@ -1387,12 +1387,12 @@ export class GoLogin {
       throw new Error(`Orbita browser is not exists on path ${ORBITA_BROWSER}, check executablePath param`);
     }
 
-    await this.createStartup();
+    const profile = await this.createStartup();
     // await this.createBrowserExtension();
     const wsUrl = await this.spawnBrowser();
     this.setActive(true);
 
-    return { status: 'success', wsUrl };
+    return { status: 'success', wsUrl, profile };
   }
 
   async startLocal() {
