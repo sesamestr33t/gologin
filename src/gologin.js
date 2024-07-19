@@ -1460,7 +1460,7 @@ export class GoLogin {
     }
 
     if (body.status === 'profileStatuses.pending') {
-      return { status: 'pending', message: 'remote browser is being prepared, please try in 1 minute.' };
+      return { status: 'pending', message: 'remote browser is being prepared, please try in 1 minute.', profile };
     }
 
     let remoteOrbitaUrl = `https://${this.profile_id}.orbita.gologin.com`;
@@ -1496,10 +1496,10 @@ export class GoLogin {
 
     const wsUrl = await this.waitDebuggingUrl(delay_ms, 0, remoteOrbitaUrl);
     if (wsUrl !== '') {
-      return { status: 'success', wsUrl };
+      return { status: 'success', wsUrl, profile };
     }
 
-    return { status: 'failure', message: body };
+    return { status: 'failure', message: body, profile };
   }
 
   async stopRemote() {
