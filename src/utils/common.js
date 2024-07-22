@@ -1,5 +1,7 @@
+import { exec } from 'child_process';
 import { homedir } from 'os';
 import { join, sep } from 'path';
+import { promisify } from 'util';
 
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -24,6 +26,31 @@ const composeExtractionPromises = (filteredArchives, destPath = CHROME_EXTENSION
   })
 );
 
+const getMacArmSpec = async () => {
+  const doExec = promisify(exec);
+
+  const { stdout } = await doExec('sysctl machdep.cpu');
+  const regExp = /Apple M\d/;
+  const [match] = stdout.match(regExp);
+  const [_, armVersion] = match.split(' ');
+
+  return armVersion;
+};
+
+const getOsAdvanced = async () => {
+  const os = getOS();
+  if (!['mac', 'macM1'].includes(os)) {
+    return { os, osSpec: '' };
+  }
+
+  const osSpec = await getMacArmSpec();
+
+  return {
+    os: 'mac',
+    osSpec,
+  };
+};
+
 const getOS = () => {
   if (process.platform === 'win32') {
     return 'win';
@@ -38,9 +65,15 @@ const getOS = () => {
 
 const _composeExtractionPromises = composeExtractionPromises;
 export { _composeExtractionPromises as composeExtractionPromises };
+
 const _getOS = getOS;
 export { _getOS as getOS };
+
+const _getOsAdvanced = getOsAdvanced;
+export { _getOsAdvanced as getOsAdvanced };
+
 const _USER_EXTENSIONS_PATH = USER_EXTENSIONS_PATH;
 export { _USER_EXTENSIONS_PATH as USER_EXTENSIONS_PATH };
+
 const _CHROME_EXTENSIONS_PATH = CHROME_EXTENSIONS_PATH;
 export { _CHROME_EXTENSIONS_PATH as CHROME_EXTENSIONS_PATH };
