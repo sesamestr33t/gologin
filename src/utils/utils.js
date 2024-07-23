@@ -1,6 +1,15 @@
+import https from 'https';
+import http from 'http';
 import { readdirSync, statSync } from 'node:fs';
 import net from 'node:net';
 import { join } from 'node:path';
+
+export const http_get = (urlString, options, callback) => {
+  let url = new URL(urlString);
+  let client = (url.protocol === "https:") ? https : http;
+
+  return client.get(url, options, callback);
+}
 
 export const get = (value, path, defaultValue) =>
   String(path).split('.').reduce((acc, val) => {

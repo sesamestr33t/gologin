@@ -2,14 +2,13 @@ import { exec as execNonPromise } from 'child_process';
 import decompress from 'decompress';
 import decompressUnzip from 'decompress-unzip';
 import { createWriteStream, promises as _promises } from 'fs';
-import { get } from 'https';
 import { homedir } from 'os';
 import { join } from 'path';
 import ProgressBar from 'progress';
 import { createInterface } from 'readline';
 import util from 'util';
 
-import { findLatestBrowserVersionDirectory } from '../utils/utils.js';
+import { http_get as get, findLatestBrowserVersionDirectory } from '../utils/utils.js';
 import { API_URL, getOS } from '../utils/common.js';
 
 const exec = util.promisify(execNonPromise);
