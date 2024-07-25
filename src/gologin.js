@@ -3,7 +3,7 @@ import debugDefault from 'debug';
 import decompress from 'decompress';
 import decompressUnzip from 'decompress-unzip';
 import { existsSync, mkdirSync,promises as _promises } from 'fs';
-import { get as _get } from 'https';
+import { http_get as _get } from './utils/utils.js';
 import { tmpdir } from 'os';
 import { dirname, join, resolve as _resolve, sep } from 'path';
 import requests from 'requestretry';
@@ -28,7 +28,7 @@ import { archiveProfile } from './profile/profile-archiver.js';
 import { checkAutoLang } from './utils/browser.js';
 import { API_URL, getOsAdvanced, GO_LOGIN_API_URL } from './utils/common.js';
 import { STORAGE_GATEWAY_BASE_URL } from './utils/constants.js';
-import { get, isPortReachable } from './utils/utils.js';
+import { get, http_get, isPortReachable } from './utils/utils.js';
 export { exitAll, GologinApi } from './gologin-api.js';
 
 const { access, unlink, writeFile, readFile } = _promises;
@@ -245,7 +245,7 @@ export class GoLogin {
   async emptyProfileFolder() {
     debug('get emptyProfileFolder');
     const currentDir = dirname(new URL(import.meta.url).pathname);
-    const zeroProfilePath = join(currentDir, '..', 'zero_profile.zip');
+    const zeroProfilePath = join(currentDir, '..', 'zero_profile.zip').substring(1);
     const profile = await readFile(_resolve(zeroProfilePath));
     debug('emptyProfileFolder LENGTH ::', profile.length);
 
