@@ -26,7 +26,7 @@ import {
 import ExtensionsManager from './extensions/extensions-manager.js';
 import { archiveProfile } from './profile/profile-archiver.js';
 import { checkAutoLang } from './utils/browser.js';
-import { API_URL, getOsAdvanced, GO_LOGIN_API_URL } from './utils/common.js';
+import { API_URL, getOsAdvanced } from './utils/common.js';
 import { STORAGE_GATEWAY_BASE_URL } from './utils/constants.js';
 import { get, http_get, isPortReachable } from './utils/utils.js';
 export { exitAll, GologinApi } from './gologin-api.js';
