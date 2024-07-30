@@ -245,7 +245,10 @@ export class GoLogin {
   async emptyProfileFolder() {
     debug('get emptyProfileFolder');
     const currentDir = dirname(new URL(import.meta.url).pathname);
-    const zeroProfilePath = join(currentDir, '..', 'zero_profile.zip').substring(1);
+    let zeroProfilePath = join(currentDir, '..', 'zero_profile.zip');
+    if (process.platform === "win32") {
+      zeroProfilePath = zeroProfilePath.substring(1);
+    }
     const profile = await readFile(_resolve(zeroProfilePath));
     debug('emptyProfileFolder LENGTH ::', profile.length);
 
