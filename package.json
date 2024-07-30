@@ -28,7 +28,7 @@
     "requestretry": "^4.1.0",
     "rimraf": "^3.0.2",
     "socks-proxy-agent": "^8.0.3",
-    "sqlite": "^4.0.23",
+    "sqlite": "5.1.1",
     "sqlite3": "5.1.7"
   },
   "bugs": {
